@@ -1,3 +1,6 @@
 #!/bin/bash
 DB=$1
-mongo < load-${DB}/drop.js
+
+MONGO_PATH=mongo
+
+${MONGO_PATH} < load-${DB}/drop.js
