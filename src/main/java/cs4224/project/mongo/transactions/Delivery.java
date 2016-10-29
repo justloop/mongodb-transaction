@@ -20,7 +20,7 @@ public class Delivery {
 		DB db = mongoClient.getDB("test");
 		System.out.println("Connect to database successfully");  
 		//update into some diff value
-		Delivery(db, 1, 888);
+		execute(db, 1, 888);
 		//update_all_order(db);
 		//insert_customdata(db);
 		mongoClient.close();
@@ -48,7 +48,7 @@ public class Delivery {
         }
 	}
 	
-    public static void Delivery(DB db, int w_id, int o_carrier_id){
+    public static void execute(DB db, int w_id, int o_carrier_id){
         try{
         	DBCollection order2 = db.getCollection("order2");
         	// Let N denote the value of the smallest order number O_ID for district (W_ID,DISTRICT_NO) with O_CARRIER_ID = null;
