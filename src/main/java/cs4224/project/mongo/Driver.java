@@ -3,8 +3,7 @@ package cs4224.project.mongo;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import cs4224.project.mongo.transactions.Delivery;
-import cs4224.project.mongo.transactions.OrderStatus;
+import cs4224.project.mongo.transactions.*;
 
 import java.util.Scanner;
 
@@ -19,6 +18,10 @@ public class Driver {
         db = mongoClient.getDB(DATABASE);
         session = mongoClient.getDatabase(DATABASE);
 
+    }
+
+    private static void shutdown() {
+        mongoClient.close();
     }
 
     private static void ProcessNewOrder(Scanner sc, String[] tokens) {
@@ -145,6 +148,8 @@ public class Driver {
         System.err.println("Total time elapsed in sec:" + (difference/1000));
         System.err.println("Transaction throughput per sec:" + (totalExe * 1000 / difference));
         System.out.println("Start session close");
+        shutdown();
         System.out.println("Driver closed");
     }
+
 }

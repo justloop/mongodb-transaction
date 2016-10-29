@@ -17,7 +17,7 @@ public class StockLevel {
 	 * @return
 	 */
 	public static boolean execute(MongoDatabase session, int w_id, int d_id, int t, int l) {
-		FindIterable<Document> iterable = null;
+		//TODO implement me
 		
 		return true;
 	}

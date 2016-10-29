@@ -48,7 +48,7 @@ public class Delivery {
         }
 	}
 	
-    public static void execute(DB db, int w_id, int o_carrier_id){
+    public static boolean execute(DB db, int w_id, int o_carrier_id){
         try{
         	DBCollection order2 = db.getCollection("order2");
         	// Let N denote the value of the smallest order number O_ID for district (W_ID,DISTRICT_NO) with O_CARRIER_ID = null;
@@ -89,8 +89,10 @@ public class Delivery {
         			customer.update(query, customQuery);
         		}
         	}
+        	return true;
          }catch(Exception e){
             System.err.println( e.getClass().getName() + ": " + e.getMessage());
+			return false;
          }
     }
     
