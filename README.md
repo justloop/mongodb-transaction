@@ -19,6 +19,14 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
         ├── item.py: script to generate item.csv to be inserted in cassandra from original tables
         ├── order2.py: script to generate order2.csv to be inserted in cassandra from original tables
         ├── warehouse.py: script to generate warehouse.csv to be inserted in cassandra from original tables
+├── mongodb-linux-x86_64-rhel70-3.2.9: the mongodb configurations for 3 node sharding, this folder is assumed to be placed under /temp of xcnd9, xcnd10, xcnd11 servers
+    ├── bin: the executables
+    ├── db: the db folders
+    ├── log: the log folders
+    ├── *.config: the configurations for different kinds of mongonode
+    ├── start.sh: script to start all the mongodb instances in three servers
+    ├── start_*.sh: script to start the different mongodb instance in localhost
+    ├── stop.sh: will stop the mongodb processes for all three servers
 ├── benchmark: the folder to do benchmarks
     ├── driver_lib: the dependent jar libs
     ├── driver.jar: the compiled java files
@@ -72,6 +80,10 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 
     under the benchmark folder, we have the {benchmark start timestamp} folder, which contains the benchmark outputs for each client running
 
-8. Kill the mongodb process, start the mongodb process on three servers with replication. Make sure the mongodb is correctly started and ready to accept queries
+8. Kill the mongodb process, start the mongodb process on three servers with replication.
 
-9. Repeat 5 - 7 to get result of 3 replication benchmark
+9. Download and put mongodb-linux-x86_64-rhel70-3.2.9 under /temp directory of all three servers (ie: xcnd9, xcnd10, xcnd11), follow the folder structure of mongodb-linux-x86_64-rhel70-3.2.9 under current repo. Run sh start.sh to start the three node mongodb, make sure instances are correctly started and ready to accept any queries.
+
+10. Make sure the mongodb is correctly started and ready to accept queries
+
+11. Repeat 5 - 7 to get result of 3 replication benchmark
