@@ -19,6 +19,7 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
         ├── item.py: script to generate item.csv to be inserted in cassandra from original tables
         ├── order2.py: script to generate order2.csv to be inserted in cassandra from original tables
         ├── warehouse.py: script to generate warehouse.csv to be inserted in cassandra from original tables
+├── load_minimal: the minimal test package used for development
 ├── mongodb-linux-x86_64-rhel70-3.2.9: the mongodb configurations for 3 node sharding, this folder is assumed to be placed under /temp of xcnd9, xcnd10, xcnd11 servers
     ├── bin: the executables
     ├── db: the db folders
