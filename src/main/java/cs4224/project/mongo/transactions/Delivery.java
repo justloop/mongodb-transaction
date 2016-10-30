@@ -17,12 +17,13 @@ public class Delivery {
 	
 	public static void main( String[] args ){
 		MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-		DB db = mongoClient.getDB("test");
+		DB db = mongoClient.getDB("D8");
 		System.out.println("Connect to database successfully");  
 		//update into some diff value
 		execute(db, 1, 888);
 		//update_all_order(db);
 		//insert_customdata(db);
+		//print_all(db);
 		mongoClient.close();
 	}
 	
@@ -48,23 +49,50 @@ public class Delivery {
         }
 	}
 	
+	public static boolean populate_orderlines(DB db, int w_id, int d_id){
+		
+		System.out.println("populating orderlines of: w_id: " + w_id + "  d_id: " + d_id);
+		BasicDBList list2 = new BasicDBList();
+		list2.add(new BasicDBObject("o_d_id", d_id));
+		list2.add(new BasicDBObject("o_w_id", w_id));
+		
+		DBCollection order2 = db.getCollection("order2");
+		BasicDBObject orderline = new BasicDBObject();
+		orderline.put("ol_amount", 111.1);
+		orderline.put("ol_quantity", 12);
+		orderline.put("ol_i_id", 100);
+		BasicDBObject update = new BasicDBObject();
+		update.put("$push", new BasicDBObject("orderlines",orderline));
+		order2.update(new BasicDBObject("$and", list2), update,true,true);
+		
+		BasicDBObject orderline2 = new BasicDBObject();
+		orderline2 = new BasicDBObject();
+		orderline2.put("ol_amount", 222.1);
+		orderline2.put("ol_quantity", 13);
+		orderline2.put("ol_i_id", 123);
+		update = new BasicDBObject();
+		update.put("$push", new BasicDBObject("orderlines",orderline2));
+		order2.update(new BasicDBObject("$and", list2), update,true,true);
+		return true;
+	}
+	
     public static boolean execute(DB db, int w_id, int o_carrier_id){
         try{
         	DBCollection order2 = db.getCollection("order2");
         	// Let N denote the value of the smallest order number O_ID for district (W_ID,DISTRICT_NO) with O_CARRIER_ID = null;
         	for(int i = 1; i <= 10; i++){
+        		//populate_orderlines(db, w_id, i);
         		BasicDBList list = new BasicDBList();
         		list.add(new BasicDBObject("o_d_id", i));
         		list.add(new BasicDBObject("o_w_id", w_id));
         		list.add(new BasicDBObject("o_carrier_id", -1));
         		DBCursor curr = order2.find(
         				new BasicDBObject("$and", list))
-        				.sort(new BasicDBObject("o_id", -1))
+        				.sort(new BasicDBObject("o_id", 1))
                 		.limit(1);
         		if (curr.hasNext()){
         			DBObject temp = curr.next();
         			BasicDBObject query = new BasicDBObject("_id", new ObjectId(temp.get("_id").toString()));
-        			System.out.println("Before update..." + temp.get("_id"));
         			BasicDBObject updateFields = new BasicDBObject();
         			// update o_carrier_id in order
         			// update order_line's date time
@@ -82,11 +110,15 @@ public class Delivery {
         			// update customer
         			//Increment C BALANCE by B, where B denote the sum of OL AMOUNT for all the items placed in order X, Increment C DELIVERY CNT by 1
         			DBCollection customer = db.getCollection("customer");
-        			query = new BasicDBObject("c_id", Integer.valueOf((temp.get("o_c_id").toString())));
-        			BasicDBObject customQuery = new BasicDBObject().append("$inc",new BasicDBObject().append("c_delivery_cnt", 1));
-        			customer.update(query, customQuery);
-        			customQuery =new BasicDBObject().append("$inc",new BasicDBObject().append("c_balance", sum));
-        			customer.update(query, customQuery);
+            		BasicDBList list2 = new BasicDBList();
+            		list2.add(new BasicDBObject("d_id", i));
+            		list2.add(new BasicDBObject("w_id", w_id));
+            		list2.add(new BasicDBObject("c_id", Integer.valueOf((temp.get("o_c_id").toString()))));
+        			System.out.println("Upadating customer: " + list2);
+        			BasicDBObject fields = new BasicDBObject().append("c_delivery_cnt", 1)
+							  .append("c_balance", sum);
+        			BasicDBObject updateQuery = new BasicDBObject().append("$inc", fields);
+        			customer.update(new BasicDBObject("$and", list2), updateQuery);
         		}
         	}
         	return true;
@@ -96,8 +128,12 @@ public class Delivery {
          }
     }
     
-    public void print_all(DBCollection a){
-    	DBCursor curr3 = a.find();
+    public static void print_all(DB db){
+    	DBCollection order2 = db.getCollection("order2");
+        BasicDBObject temp = new BasicDBObject("o_w_id", 1).
+            	append("o_carrier_id", -1);
+        
+    	DBCursor curr3 = order2.find(temp);
 		while(curr3.hasNext()) {
 			DBObject temp2 = curr3.next();
 			System.out.println(temp2);
