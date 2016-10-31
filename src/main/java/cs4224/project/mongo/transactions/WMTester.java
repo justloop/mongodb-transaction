@@ -16,6 +16,12 @@ public class WMTester {
 	public static void main(String[] args) {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		MongoDatabase session = mongoClient.getDatabase("D8");
+		
+		// Test new order
+		int[] itemNum = {1, 2};
+		int[] supplier = {1, 1};
+		int[] quantity = {1, 2};
+		NewOrder.execute(session, 1, 1, 1, 2, itemNum, supplier, quantity);
 
 		// Test order status
 		//OrderStatus.execute(session, 1, 1, 1);
@@ -24,7 +30,7 @@ public class WMTester {
 		//StockLevel.execute(session, 1, 1, 100, 5);
 		
 		// Test popular item
-		PopularItem.execute(session, 2, 2, 10);
+		//PopularItem.execute(session, 2, 2, 10);
 	}
 
 }

@@ -1,10 +1,5 @@
 package cs4224.project.mongo.transactions;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.gte;
-import static com.mongodb.client.model.Filters.lt;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bson.Document;
+
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 
-import org.bson.Document;
+import static com.mongodb.client.model.Filters.*;
 
 public class PopularItem {
 
@@ -36,13 +33,12 @@ public class PopularItem {
 		System.out.println("Number of last orders to be examined: " + l);
 		
 		// Find next available order id
-		iterable = session.getCollection("district")
+		Document district = session.getCollection("district")
 			.find(
 				and(eq("w_id", w_id), eq("d_id", d_id))
 			)
-			.limit(1);
+			.first();
 		
-		Document district = iterable.first();
 		int d_next_oid = district.getInteger("d_next_oid");
 		
 		// Find last L orders

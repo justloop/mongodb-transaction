@@ -29,13 +29,12 @@ public class StockLevel {
 		FindIterable<Document> iterable = null;
 		
 		// Find next available order id
-		iterable = session.getCollection("district")
+		Document district = session.getCollection("district")
 			.find(
 				and(eq("w_id", w_id), eq("d_id", d_id))
 			)
-			.limit(1);
+			.first();
 		
-		Document district = iterable.first();
 		int d_next_oid = district.getInteger("d_next_oid");
 		
 		// Find last L orders

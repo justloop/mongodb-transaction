@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bson.Document;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 
 import static com.mongodb.client.model.Filters.*;
@@ -21,10 +20,8 @@ public class OrderStatus {
 	 * @return
 	 */
 	public static boolean execute(MongoDatabase session, int w_id, int d_id, int c_id) {
-		FindIterable<Document> iterable = null;
-		
 		// Find customer
-		iterable = session.getCollection("customer")
+		Document customer = session.getCollection("customer")
 			.find(
 				and(eq("w_id", w_id), eq("d_id", d_id), eq("c_id", c_id))
 			)
@@ -32,8 +29,7 @@ public class OrderStatus {
 				include("c_first", "c_middle", "c_last", "c_balance", "last_order_id"),
 				exclude("_id")
 			))
-			.limit(1);
-		Document customer = iterable.first();
+			.first();
 		
 		System.out.println("C_FIRST: " + customer.getString("c_first"));
 		System.out.println("C_MIDDLE: " + customer.getString("c_middle"));
@@ -42,12 +38,11 @@ public class OrderStatus {
 		
 		// Find customer's last order
 		int o_id = customer.getInteger("last_order_id");
-		iterable = session.getCollection("order2")
+		Document order = session.getCollection("order2")
 			.find(
 				and(eq("o_w_id", w_id), eq("o_d_id", d_id), eq("o_id", o_id))
 			)
-			.limit(1);
-		Document order = iterable.first();
+			.first();
 		
 		System.out.println("O_ID: " + o_id);
 		System.out.println("O_ENTRY_D: " + order.getString("o_entry_d"));
