@@ -5,14 +5,17 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 ```
 ├── load: the scripts to load/drop database, generate loadable json files from original data, load data into mongodb
     ├── load.sh: script to load the generated data into mongodb, usage: sh load.sh D8|D40
+    ├── load_no_sharding.sh: script to load the generated data into mongodb without sharding for single replica case, usage: sh load_no_sharding.sh D8|D40
     ├── drop.sh: script to drop the database in mongodb, usage: sh drop.sh D8|D40
     ├── index.sh: script to add defined index to mongodb, usage: sh index.sh D8|D40
+    ├── index_no_sharding.sh: script to add defined index to mongodb without sharding for single replica case, usage: sh index_no_sharding.sh D8|D40
     ├── load-D8|D40: contains the scripts to generate json files from original data
         ├── gen.sh: combined script to generate the loadable data, which invokes all the py files
         ├── schema: the original data csv schema, we put this header to all the original data
         ├── D8|D40-data: the input data, which contains the schema header as well
         ├── mongodb: the output folder for gen.sh, also the input of load.sh
         ├── index.js: query script for mongo shell to create index, used by index.sh and load.sh
+        ├── index_no_sharding.js: query script for mongo shell to create index, used by index_no_sharding.sh and load_no_sharding.sh
         ├── drop.js: query script for mongo shell to drop the database, used by drop.sh
         ├── customer.py: script to generate customer.csv to be inserted in cassandra from original tables
         ├── district.py: script to generate district.csv to be inserted in cassandra from original tables
@@ -53,12 +56,14 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
     ```
     ├── load
         ├── load.sh
+        ├── load_no_sharding.sh
         ├── drop.sh
         ├── load-D8|D40
             ├── mongodb
                 ├── the generated data files
             ├── drop.js
             ├── index.js
+            ├── index_no_sharding.js
     ├── benchmark
         ├── driver_lib
             ├── all the jar libs
@@ -70,7 +75,7 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 
 4. Start mongodb process with 1 replication. Make sure the mongodb is correctly started and ready to accept queries
 
-5. Go to load folder and run load.sh to load the data into MongoDB. Make sure the data is correctly inserted.
+5. Go to load folder and run load_no_sharding.sh to load the data into MongoDB. Make sure the data is correctly inserted.
 
 6. Run the benchmark_runner
     run> nohup sh benchmark_runner.sh > benchmark.log 2>&1 &
@@ -87,4 +92,4 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 
 10. Make sure the mongodb is correctly started and ready to accept queries
 
-11. Repeat 5 - 7 to get result of 3 replication benchmark
+11. Repeat 5 - 7 to get result of 3 replication benchmark, Note that for 5, run load.sh to load data with sharding
