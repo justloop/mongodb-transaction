@@ -48,7 +48,7 @@ public class StockLevel {
 			));
 		
 		// Collect all appeared items
-		Set<Integer> items = new HashSet<>();
+		final Set<Integer> items = new HashSet<>();
 		iterable.forEach(new Block<Document>() {
 		    @Override
 		    public void apply(final Document order) {

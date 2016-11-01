@@ -48,7 +48,7 @@ public class Driver {
         int c_d_id = Integer.parseInt(tokens[2]);
         int c_id = Integer.parseInt(tokens[3]);
         double payment_amount = Double.parseDouble(tokens[4]);
-        Payment.execute(session, c_w_id,c_d_id,c_id,payment_amount);
+        Payment.execute(db, c_w_id,c_d_id,c_id,payment_amount);
     }
 
     private static void ProcessDelivery(Scanner sc, String[] tokens) {
@@ -80,7 +80,7 @@ public class Driver {
     }
 
     private static void ProcessTopBalance(Scanner sc, String[] tokens) {
-        TopBalance.execute(session);
+        TopBalance.execute(db);
     }
 
     public static void main(String[] args) throws InterruptedException {

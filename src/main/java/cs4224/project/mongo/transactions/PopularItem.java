@@ -49,9 +49,9 @@ public class PopularItem {
 			);
 		
 		// Distinct popular items
-		Set<String> popItems = new HashSet<>();
+		final Set<String> popItems = new HashSet<>();
 		// All items ordered in each order
-		List<Set<String>> orderItems = new ArrayList<>();
+		final List<Set<String>> orderItems = new ArrayList<>();
 		
 		iterable.forEach(new Block<Document>() {
 		    @Override

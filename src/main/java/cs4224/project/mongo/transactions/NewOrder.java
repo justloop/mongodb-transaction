@@ -84,7 +84,7 @@ public class NewOrder {
 			)
 		);
 		
-		Map<String, Document> itemStocks = new HashMap<>();
+		final Map<String, Document> itemStocks = new HashMap<>();
 		iterable.forEach(new Block<Document>() {
 		    @Override
 		    public void apply(final Document item) {
