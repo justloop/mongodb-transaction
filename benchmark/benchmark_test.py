@@ -34,12 +34,10 @@ for filename in glob.glob(folder + "/*.txt"):
     last = ""
     for line in open(filename):
         last = line.strip()
-    if len(last) == 0:
-        print "Err reading output: ", filename
-    else:
-        lineArr = last.split(':')
-        throughput.append(float(lineArr[1]))
-    i = i + 1
+        if last.startswith("Transaction throughput"):
+            throughput.append(float(last.split(':').pop()))
+
+print "\nNumber of results collected =\n", len(throughput)
 max_value = max(throughput)
 min_value = min(throughput)
 avg_value = sum(throughput) / len(throughput)
