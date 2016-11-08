@@ -25,12 +25,19 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 ├── load_minimal: the minimal test package used for development
 ├── mongodb-linux-x86_64-rhel70-3.2.9: the mongodb configurations for 3 node sharding, this folder is assumed to be placed under /temp of xcnd9, xcnd10, xcnd11 servers
     ├── bin: the executables
-    ├── db: the db folders
-    ├── log: the log folders
+    ├── db: the db folders:(no need to modify or add anything)
+    ├── log: the log folders:(no need to modify or add anything)
     ├── *.config: the configurations for different kinds of mongonode
     ├── start.sh: script to start all the mongodb instances in three servers
     ├── start_*.sh: script to start the different mongodb instance in localhost
     ├── stop.sh: will stop the mongodb processes for all three servers
+├── mongo-single: the mongodb configurations for 1 node, folder is assumed to be placed under /temp of xcnd10
+    ├── mongodb-linux-x86_64-rhel70-3.2.9: the mongodb uncompressed
+        ├── bin: the executables: the executables
+        ├── db: the db folders:(no need to modify or add anything)
+        ├── log: the log folders:(no need to modify or add anything)
+        ├── set10.conf: the configuration for mongodb
+        ├── start_data.sh: the starting script
 ├── benchmark: the folder to do benchmarks
     ├── driver_lib: the dependent jar libs
     ├── driver.jar: the compiled java files
@@ -40,12 +47,15 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
 ├── src: the java files
     ├── transactions: the file to do individule transactions
     ├── Driver.java: the entry main class to run the transaction by reading from stdin and output to stderr
+├── 1shard_result.zip: benchmark result log files of 1 shard
+├── 3shard_result.zip: benchmark result log files of 3 shards
 ├── pom.xml: the maven config file
 ```
 
 ## Configuration and run program
 1. Compile the program:
-    Open with Intellij or Eclipse, import as Maven projects with Java 8 as environment, make sure you can pull the maven dependencies from internet. If you don't need to change code, you can use the compiled code from benchmark folder. To regenerate, you can create a runnable jar from Intellij or Eclipse and get all the jar libs into a separate files. Put the driver.jar (compiled jar) and driver_lib/ (the lib jars) under benchmark/ folder
+    We use maven for packaging and dependency management. To compile and generate jar, go to home folder where pom.xml. Run mvn install, the jar will be under target folder.
+    rename it to driver.jar because the benchmark scripts are assuming the name is driver.jar
 
 2. Generate the input files:
     Download the data files, put into corresponding load/load-D8/D8-data or load/load-D40/D40-data folder, input the schema header into the first line of each data file
@@ -71,9 +81,9 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
         ├── benchmark.py
     ├── benchmark_runner.sh
     ```
-    Note: the mongodb bin is assumed to be at: /temp/mongodb-linux-x86_64-rhel70-3.2.9/bin under localhost
+    Note: the mongodb bin is assumed to be at: /temp/mongodb-linux-x86_64-rhel70-3.2.9/bin (3 shards) and /temp/mongo-single/mongodb-linux-x86_64-rhel70-3.2.9/bin (single node) under localhost
 
-4. Start mongodb process with 1 replication. Make sure the mongodb is correctly started and ready to accept queries
+4. Start mongodb process with 1 replication by running sh start_data.sh under /temp/mongo-single/. Make sure the mongodb is correctly started and ready to accept queries
 
 5. Go to load folder and run load_no_sharding.sh to load the data into MongoDB. Make sure the data is correctly inserted.
 
