@@ -81,11 +81,11 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
         ├── benchmark.py
     ├── benchmark_runner.sh
     ```
-    Note: the mongodb bin is assumed to be at: /temp/mongodb-linux-x86_64-rhel70-3.2.9/bin (3 shards) and /temp/mongo-single/mongodb-linux-x86_64-rhel70-3.2.9/bin (single node) under localhost
+    Note: the mongodb bin is assumed to be at: /temp/mongodb-linux-x86_64-rhel70-3.2.9/bin (3 shards) and /temp/mongo-single/mongodb-linux-x86_64-rhel70-3.2.9/bin (single node)
 
-4. Start mongodb process with 1 replication by running sh start_data.sh under /temp/mongo-single/. Make sure the mongodb is correctly started and ready to accept queries
+4. Download mongodb and place it under /temp/mongo-single/. Start mongodb process with 1 replication by running sh start_data.sh under /temp/mongo-single/. Make sure the mongodb is correctly started and ready to accept queries
 
-5. Go to load folder and run load_no_sharding.sh to load the data into MongoDB. Make sure the data is correctly inserted.
+5. Go to load folder and run sh load_no_sharding.sh to load the data into MongoDB. Make sure the data is correctly inserted.
 
 6. Run the benchmark_runner
     run> nohup sh benchmark_runner.sh > benchmark.log 2>&1 &
@@ -94,12 +94,14 @@ Code can be open with Intellij or Eclipse with Java8 (lambda level) and Maven3
     under the root folder of this project
     benchmark-{D8|D40}-{10|20|40}.log is the corresponding results for each benchmark
 
-    under the benchmark folder, we have the {benchmark start timestamp} folder, which contains the benchmark outputs for each client running
+    under the benchmark folder, we have the {benchmark start timestamp} folder, which contains the benchmark outputs for each client running (*.log). It also contains the numebr of transactions and average transaction throughput result (*.txt).
 
-8. Kill the mongodb process, start the mongodb process on three servers with replication.
+8. Store the results (or the logs) in another folder if you want to save for the future use.
 
-9. Download and put mongodb-linux-x86_64-rhel70-3.2.9 under /temp directory of all three servers (ie: xcnd9, xcnd10, xcnd11), follow the folder structure of mongodb-linux-x86_64-rhel70-3.2.9 under current repo. Run sh start.sh to start the three node mongodb, make sure instances are correctly started and ready to accept any queries.
+9. Kill the mongodb process, start the mongodb process on three servers with replication.
 
-10. Make sure the mongodb is correctly started and ready to accept queries
+10. Download and put mongodb-linux-x86_64-rhel70-3.2.9 under /temp directory of all three servers (ie: xcnd9, xcnd10, xcnd11), follow the folder structure of mongodb-linux-x86_64-rhel70-3.2.9 under current repo. Run sh start.sh to start the three node mongodb, make sure instances are correctly started and ready to accept any queries.
 
-11. Repeat 5 - 7 to get result of 3 replication benchmark, Note that for 5, run load.sh to load data with sharding
+11. Make sure the mongodb is correctly started and ready to accept queries
+
+12. Repeat 5 - 8 to get result of 3 replication benchmark, Note that for 5, run load.sh to load data with sharding
